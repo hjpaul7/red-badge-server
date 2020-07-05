@@ -111,3 +111,16 @@ router.post("/adminregister", (req, res) => {
     (createError = (err) => res.send(500, err))
   );
 });
+
+// Admin User Delete
+router.delete("/:id", (req, res) => {
+  User.destroy({
+    where: {
+      id: req.params.id,
+    },
+  }).then((user) =>
+    res.status(200).json({
+      user: user,
+    })
+  );
+});
