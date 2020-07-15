@@ -100,7 +100,7 @@ router.post("/adminregister", (req, res) => {
   User.create({
     username: req.body.username,
     password: bcrypt.hashSync(req.body.password, 10),
-    userRole: "user",
+    userRole: req.body.userRole,
   }).then(
     (createSuccess = (user) => {
       res.json({
@@ -123,4 +123,25 @@ router.delete("/:id", (req, res) => {
       user: user,
     })
   );
+});
+
+// User Portal Get User by ID`
+router.get("/:username", (req, res) => {
+  User.findOne({
+    where: {
+      username: req.params.username,
+      // id: req.params.id,
+      // id: req.user.id,
+    },
+  })
+    .then((user) =>
+      res.status(200).json({
+        user: user,
+      })
+    )
+    .catch((err) =>
+      res.status(500).json({
+        error: err,
+      })
+    );
 });
