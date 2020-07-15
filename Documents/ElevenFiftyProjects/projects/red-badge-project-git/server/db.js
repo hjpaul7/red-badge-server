@@ -10,4 +10,11 @@ sequelize
   .catch((err) => console.log(err));
 
 // export module to be able to access it in our other files
+
+User = sequelize.import('./models/user');
+Time = sequelize.import('./models/time');
+
+Time.belongsTo(User);
+User.hasMany(Time);
+
 module.exports = sequelize;
