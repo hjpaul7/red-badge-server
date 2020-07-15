@@ -5,7 +5,10 @@ const Time = require("../db").import("../models/time");
 // GET
 router.get("/", (req, res) => {
   Time.findAll({
-    where: {},
+    where: {
+      userId: req.user.id
+    },
+    include: 'user'
   })
     .then((times) =>
       res.status(200).json({
@@ -25,7 +28,7 @@ router.post("/", (req, res) => {
     route: req.body.route,
     length: req.body.length,
     time: req.body.time,
-    owner_id: req.user.id,
+    userId: req.user.id,
   };
   Time.create(timeFromRequest)
     .then((time) =>
@@ -43,9 +46,7 @@ router.post("/", (req, res) => {
 // UPDATE BY ID
 router.put("/:id", (req, res) => {
   Time.update(req.body, {
-    where: {
-      id: req.params.id,
-    },
+    where: { userId: req.user.id},
   })
     .then((time) =>
       res.status(200).json({
@@ -61,9 +62,7 @@ router.put("/:id", (req, res) => {
 
 router.delete("/:id", (req, res) => {
   Time.destroy({
-    where: {
-      id: req.params.id,
-    },
+    where: {},
   })
     .then((trail) =>
       res.status(200).json({
